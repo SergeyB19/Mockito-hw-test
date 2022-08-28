@@ -1,57 +1,66 @@
 package pro.sky.java.course2.mockitohwtest.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Employee {
-    private final String lastName;
-    private final String firstName;
 
-    private final String departmentId;
-    private final Integer salaryOfEmployee;
+    @JsonProperty("firstName")
+    private final String name;
 
+    @JsonProperty("lastName")
+    private final String surname;
 
-    public Employee(String lastName, String firstName, String departmentId, Integer salaryOfEmployee) {
-        this.firstName = lastName;
-        this.lastName = firstName;
-        this.departmentId = departmentId;
-        this.salaryOfEmployee = salaryOfEmployee;
+    private int department;
+    private double salary;
 
+    public Employee(String name, String surname, int department, double salary) {
+        this.name = name;
+        this.surname = surname;
+        this.department = department;
+        this.salary = salary;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public int getDepartment() {
+        return department;
     }
 
-    public int getSalaryOfEmployee() {
-        return salaryOfEmployee;
+    public void setDepartment(int department) {
+        this.department = department;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Employee)) return false;
-        Employee employees = (Employee) o;
-        return Objects.equals(getFirstName(), employees.getFirstName()) && Objects.equals(getLastName(), employees.getLastName()) && Objects.equals(getDepartmentId(), employees.getDepartmentId()) && Objects.equals(getSalaryOfEmployee(), employees.getSalaryOfEmployee());
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Employee employee = (Employee) o;
+        return department == employee.department && Double.compare(employee.salary, salary) == 0 && Objects.equals(name, employee.name) && Objects.equals(surname, employee.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getDepartmentId(), getSalaryOfEmployee());
+        return Objects.hash(name, surname, department, salary);
     }
 
-    @Override
-    public String toString() {
-        return "Имя сотрудника: " + firstName + ", "
-                + "фамилия сотрудника: " + lastName + ", " + " Отдел: " + departmentId + ", " + " Заработанная плата: "
-                + salaryOfEmployee;
-
-    }
 }
