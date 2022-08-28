@@ -16,29 +16,39 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
+    private static final int LIMIT = 10;
+
+    private final List<Employee> employees = new ArrayList<>();
+
     private final ValidatorService validatorService;
+
     public EmployeeService(ValidatorService validatorService) {
         this.validatorService = validatorService;
     }
 
-    public Employee add(String name, String surname, int department, double salary) {
-        Employee employee = new Employee(validatorService.validateName(name),
+    public Employee add(String name,
+                        String surname,
+                        int department,
+                        double salary) {
+        Employee employee = new Employee(
+                validatorService.validateName(name),
                 validatorService.validateSurname(surname),
                 department,
                 salary
         );
-        if (employee.contains(employee)) {
+        if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException();
         }
-        if (employee.size() < LIMIT) {
-            employee.add(employee);
+        if (employees.size() < LIMIT) {
+            employees.add(employee);
             return employee;
         }
         throw new EmployeeStorageIsFullException();
     }
 
-    public Employee remove(String name, String surname) {
-        Employee employee = employee.stream()
+    public Employee remove(String name,
+                           String surname) {
+        Employee employee = employees.stream()
                 .filter(emp -> emp.getName().equals(name) && emp.getSurname().equals(surname))
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
@@ -46,9 +56,10 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee find(String name, String surname) {
+    public Employee find(String name,
+                         String surname) {
         return employees.stream()
-                .filter(emp -> emp.getName().equals(name) && emp.getSurname().equals(surname))
+                .filter(employee -> employee.getName().equals(name) && employee.getSurname().equals(surname))
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
     }
@@ -56,4 +67,5 @@ public class EmployeeService {
     public List<Employee> getAll() {
         return new ArrayList<>(employees);
     }
+
 }
